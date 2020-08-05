@@ -29,6 +29,7 @@ namespace TextEncoder.Services
                 Console.WriteLine($"\n\n *** Your Encoded Text *** \n\n\t {outputStr} \n\n Press Q to Exit or any key to Continue");
             }
         }
+
         /// <summary>
         /// Flip Text Horizontally.
         /// </summary>
@@ -75,6 +76,11 @@ namespace TextEncoder.Services
             return await Task.FromResult(new string(horizontalFlipValue.ToArray()));
         }
 
+        /// <summary>
+        /// Flip text vertically
+        /// </summary>
+        /// <param name="inputStr"></param>
+        /// <returns></returns>
         public async Task<string> VerticalFlip(string inputStr)
         {
             KeyBoard keyBoard = new KeyBoard();
@@ -111,7 +117,6 @@ namespace TextEncoder.Services
                 }
             }
             return await Task.FromResult(new string(verticalFlipValue.ToArray()));
-            //return new string(verticalFlipValue.ToArray());
         }
 
         /// <summary>
