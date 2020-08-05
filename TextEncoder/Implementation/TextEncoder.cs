@@ -10,7 +10,7 @@ namespace TextEncoder.Services
 {
     public class TextEncoder : ITextEncoder
     {
-        public async void RunEncoder()
+        public void RunEncoder()
         {
             AppRunner();
         }
