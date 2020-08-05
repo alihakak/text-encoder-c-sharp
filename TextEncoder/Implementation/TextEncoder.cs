@@ -1,5 +1,4 @@
 ﻿using TextEncoder.Interface;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using TextEncoder.Entities;
