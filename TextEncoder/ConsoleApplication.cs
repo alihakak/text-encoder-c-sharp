@@ -15,7 +15,7 @@ namespace TextEncoder
 
         public void Run()
         {
-            _encoder.CreateEncoder(); 
+            _encoder.RunEncoder(); 
         }
     }
 }

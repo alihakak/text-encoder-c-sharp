@@ -4,22 +4,38 @@ using System;
 using System.Collections.Generic;
 using TextEncoder.Entities;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace TextEncoder.Services
 {
     public class TextEncoder : ITextEncoder
     {
-        public void CreateEncoder()
+        public async void RunEncoder()
         {
-            Console.WriteLine("Creating a Encoder with concrete class injected using constructor injection");
+            AppRunner();
         }
 
+        private async void AppRunner()
+        {
+            Console.WriteLine("Encoder Loaded...To Start Press any key.");
+
+            while (Console.ReadLine().ToUpper() != "Q")
+            {
+                Console.WriteLine("\nPlease enter input string to encode: ");
+                var inputStr = Console.ReadLine();
+                Console.WriteLine("\nPlease enter your Key Phrase eg. 1,H,V: ");
+                var commandLine = Console.ReadLine();
+
+                var outputStr = await EncodeText(inputStr, commandLine);
+                Console.WriteLine($"\n\n *** Your Encoded Text *** \n\n\t {outputStr} \n\n Press Q to Exit or any key to Continue");
+            }
+        }
         /// <summary>
         /// Flip Text Horizontally.
         /// </summary>
         /// <param name="inputStr"></param>
         /// <returns></returns>
-        public string HorizontalFlip(string inputStr)
+        public async Task<string> HorizontalFlip(string inputStr)
         {
             KeyBoard keyBoard = new KeyBoard();
             inputStr = inputStr.ToLower();
@@ -57,10 +73,10 @@ namespace TextEncoder.Services
                 }
             }
 
-            return new string(horizontalFlipValue.ToArray());
+            return await Task.FromResult(new string(horizontalFlipValue.ToArray()));
         }
 
-        public string VerticalFlip(string inputStr)
+        public async Task<string> VerticalFlip(string inputStr)
         {
             KeyBoard keyBoard = new KeyBoard();
             inputStr = inputStr.ToLower();
@@ -95,8 +111,8 @@ namespace TextEncoder.Services
                     verticalFlipValue.Add(inputStr[i]);
                 }
             }
-
-            return new string(verticalFlipValue.ToArray());
+            return await Task.FromResult(new string(verticalFlipValue.ToArray()));
+            //return new string(verticalFlipValue.ToArray());
         }
 
         /// <summary>
@@ -105,7 +121,7 @@ namespace TextEncoder.Services
         /// <param name="inputStr"></param>
         /// <param name="shiftBy"></param>
         /// <returns></returns>
-        public string ShiftBy(string inputStr, int shiftBy)
+        public async Task<string> ShiftBy(string inputStr, int shiftBy)
         {
             KeyBoard keyBoard = new KeyBoard();
             inputStr = inputStr.ToLower();
@@ -146,7 +162,33 @@ namespace TextEncoder.Services
                     shiftedValue.Add(inputStr[i]);
                 }
             }
-            return new string(shiftedValue.ToArray());
+            return await Task.FromResult(new string(shiftedValue.ToArray()));
+        }
+
+
+        public async Task<string> EncodeText(string inputStr, string commandLine)
+        {
+            commandLine = commandLine.ToUpper().Trim();
+            var outputText = inputStr.ToLower();
+            for (var i = 0; i < commandLine.Length; i++)
+            {
+                if (commandLine[i] == 'H')
+                {
+                    outputText = await HorizontalFlip(outputText);
+                }
+                else if (commandLine[i] == 'V')
+                {
+                    outputText = await VerticalFlip(outputText);
+                }
+                else
+                {
+                    var isShift = int.TryParse(commandLine[i].ToString(), out int shiftValue);
+                    if (isShift)
+                        outputText = await ShiftBy(outputText, shiftValue);
+                }
+            }
+            return await Task.FromResult(new string(outputText.ToArray()));
+            //return new string(outputText.ToArray()); ToDo: Convert to Task.
         }
     }
 }
