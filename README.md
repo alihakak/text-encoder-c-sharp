@@ -1,4 +1,4 @@
-## C# Console App - Encode by transformation key. 
+## C# Console App - Encode text by a transformation key. 
 Simple C# text encode by transforming characters.
 
 #### To Run 
